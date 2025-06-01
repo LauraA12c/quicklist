@@ -1,22 +1,22 @@
 let items = []
-function addItem() {
-const itemName = document.querySelector("#item").value
 
-    if(itemName === "") {
+function addItem() {
+    const itemName = document.querySelector("#item").value
+    if (itemName === ""){
         alert("Digite um item válido!")
         return
     }
 
-const item = {
-name: itemName,
-checked: false
-}
+    const item = {
+        name: itemName,
+        checked: false
+    }
 
-items.push(item)
+    items.push(item)
 
-document.querySelector("#item").value = ""
+    document.querySelector("#item").value = ""
 
-showItemsList()
+    showItemsList()
 }
 
 document.querySelector("#item").addEventListener("keydown", (event) => {
@@ -25,69 +25,74 @@ document.querySelector("#item").addEventListener("keydown", (event) => {
     }
 })
 
-
 function showItemsList() {
-const sectionList = document.querySelector(".list")
-sectionList.textContent = ""
+    const sectionList = document.querySelector(".list")
+    sectionList.textContent = ""
 
-items.sort((itemA, itemB) => Number(itemA.checked) - Number(itemB.checked))
+    items.sort((itemA, itemB) => Number(itemA.checked) - Number(itemB.checked))
 
-items.map((item, index) => {
-sectionList.innerHTML += `
-           <div class="item">
-               <div>
-                   <input type="checkbox" name="list" id="item-${index}" ${item.checked && "checked"}>
+    items.map((item, index) => {
+        sectionList.innerHTML += `
+            <div class="item">
+                <div>
+                    <input type="checkbox" name="list" id="item-${index}" ${item.checked && "checked"}>
 
-                   <div class="custom-checkbox" onclick="checkItem('${item.name}')">
-                       <img src="./checked.svg" alt="Checked">
-                   </div>
+                    <div class="custom-checkbox" onclick="checkItem('${item.name}')">
+                        <img src="./checked.svg" alt="checked">
+                    </div>
 
-                   <label for="item-${index}" onclick="checkItem('${item.name}')">${item.name}</label>
-               </div>
+                    <label for="item-${index}" onclick="checkItem('${item.name}')">${item.name}</label>
+                </div>
 
-               <button onclick="removeItem('${item.name}')">
-                   <img src="./trash-icon.svg" alt="Trash-icon">
-               </button>
-           </div>
-       `
-})
+                <button onclick="removeItem('${item.name}')">
+                    <img src="./trash-icon.svg" alt="trash-icon">
+                </button>
+            </div>
+        `
+    })
 
-localStorage.setItem("items", JSON.stringify(items))
+    localStorage.setItem("items", JSON.stringify(items))
 }
 
 function removeItem(itemName) {
-const itemIndex = items.findIndex((item) => item.name === item.name)
-const divWarning = document.querySelector(".warning")
+    const itemIndex = items.findIndex((item) => item.name === itemName)
+    const divWarning = document.querySelector(".warning")
 
-divWarning.classList.remove("hide-warning")
+    divWarning.classList.remove("hide-warning")
 
-setTimeout(() => {
-divWarning.classList.add("hide-warning")
-}, 4000)
+    setTimeout(() => {
+        divWarning.classList.add("hide-warning")
+    }, 4000)
 
-if(itemIndex !== 1) {
-items.splice(itemIndex, 1)
+    if (itemIndex !== -1) {
+        items.splice(itemIndex, 1)
+    }
+
+    showItemsList()
 }
 
-showItemsList()
-}
 
 function addHideWarningClass() {
-document.querySelector(".warning").classList.add("hide-warning")
+    document.querySelector(".warning").classList.add("hide-warning")
 }
 
 function checkItem(itemName) {
-const item = items.find((item) => item.name === item.name)
-item.checked = !item.checked
-showItemsList()
+    const item = items.find((item) => item.name === itemName)
 
+    if (item) {
+        item.checked = !item.checked
+        showItemsList()
+    }
 }
 
 function verifyLocalStorageItems() {
-const localStorageItems = localStorage.getItem("items")
+    const localStorageItems = localStorage.getItem("items")
 
-if(localStorageItems) {
-items = JSON.parse(localStorageItems)
-showItemsList()
+    if (localStorageItems){
+        items = JSON.parse(localStorageItems)
+        showItemsList()
+    }
+
 }
-}
+
+verifyLocalStorageItems()
