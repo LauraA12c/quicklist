@@ -1,14 +1,41 @@
 const items = []
 
 function addItem() {
-    const itemName = document.querySelector("#item").value
+const itemName = document.querySelector("#item").value
 
-    const item = {
-        name: itemName,
-        checked: false
-    }
+const item = {
+name: itemName,
+checked: false
+}
 
-    items.push(item)
+items.push(item)
 
-    document.querySelector("#item").value = ""
+document.querySelector("#item").value = ""
+
+    showItemsList()
+}
+
+function showItemsList() {
+    const sectionList = document.querySelector(".list")
+    sectionList.textContent = ""
+
+    items.map((item, index) => {
+        sectionList.innerHTML += `
+            <div class="item">
+                <div>
+                    <input type="checkbox" name="list" id="item-${index}">
+
+                    <div class="custom-checkbox">
+                        <img src="./checked.svg" alt="Checked">
+                    </div>
+
+                    <label for="item-${index}">${item.name}</label>
+                </div>
+
+                <button>
+                    <img src="./trash-icon.svg" alt="Trash-icon">
+                </button>
+            </div>
+        `
+    })
 }
