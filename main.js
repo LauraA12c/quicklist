@@ -1,7 +1,11 @@
 let items = []
-
 function addItem() {
 const itemName = document.querySelector("#item").value
+
+    if(itemName === "") {
+        alert("Digite um item válido!")
+        return
+    }
 
 const item = {
 name: itemName,
@@ -18,19 +22,20 @@ showItemsList()
 function showItemsList() {
 const sectionList = document.querySelector(".list")
 sectionList.textContent = ""
+
 items.sort((itemA, itemB) => Number(itemA.checked) - Number(itemB.checked))
+
 items.map((item, index) => {
 sectionList.innerHTML += `
            <div class="item">
                <div>
-                    <input type="checkbox" name="list" id="item-${index}" ${item.checked && "checked"}>
+                   <input type="checkbox" name="list" id="item-${index}" ${item.checked && "checked"}>
 
-
-                    <div class="custom-checkbox" onclick="checkItem('${item.name}')">
+                   <div class="custom-checkbox" onclick="checkItem('${item.name}')">
                        <img src="./checked.svg" alt="Checked">
                    </div>
 
-                  <label for="item-${index}" onclick="checkItem('${item.name}')">${item.name}</label>
+                   <label for="item-${index}" onclick="checkItem('${item.name}')">${item.name}</label>
                </div>
 
                <button onclick="removeItem('${item.name}')">
@@ -39,6 +44,7 @@ sectionList.innerHTML += `
            </div>
        `
 })
+
 localStorage.setItem("items", JSON.stringify(items))
 }
 
@@ -60,21 +66,21 @@ showItemsList()
 }
 
 function addHideWarningClass() {
-    document.querySelector(".warning").classList.add("hide-warning")
+document.querySelector(".warning").classList.add("hide-warning")
 }
 
-
 function checkItem(itemName) {
-    const item = items.find((item) => item.name === item.name)
-    item.checked = !item.checked
-    showItemsList()
+const item = items.find((item) => item.name === item.name)
+item.checked = !item.checked
+showItemsList()
+
 }
 
 function verifyLocalStorageItems() {
-    const localStorageItems = localStorage.getItem("items")
+const localStorageItems = localStorage.getItem("items")
 
-    if(localStorageItems) {
-        items = JSON.parse(localStorageItems)
-        showItemsList()
-    }
+if(localStorageItems) {
+items = JSON.parse(localStorageItems)
+showItemsList()
+}
 }
